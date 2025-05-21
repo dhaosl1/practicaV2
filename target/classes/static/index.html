@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevTeam: Користувач / Адмін</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding-top: 4rem;
+        }
+        .navbar-brand {
+            font-weight: 700;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+        }
+        .section-title::after {
+            content: "";
+            width: 60px;
+            height: 4px;
+            background-color: #0d6efd;
+            display: block;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+        .card {
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #343a40;
+            color: #adb5bd;
+            padding: 20px 0;
+            margin-top: 2rem;
+        }
+        footer a {
+            color: #adb5bd;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        /* Сховати всі адмінські розділи  */
+        .admin-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!-- Навігаційна панель -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">DevTeam</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <!-- Посилання для Користувача -->
+                <li class="nav-item"><a class="nav-link" href="#user-section">Користувач</a></li>
+                <!-- Посилання для Адміна -->
+                <li class="nav-item"><a id="admin-nav-link" class="nav-link" href="#admin-section">Адмін</a></li>
+                <!-- Кнопка виходу з ролі адміну -->
+                <li class="nav-item"><a id="logout-btn" class="nav-link" style="display: none; cursor: pointer;">Вихід</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Секція для Користувача -->
+    <section id="user-section" class="py-5">
+        <h2 class="section-title">Користувацька Частина</h2>
+        <p class="text-center mb-4">
+            Тут можна створювати Замовника та Створювати Технічне Завдання (ТЗ).
+        </p>
+        <div class="row">
+            <!-- Форма створення Замовника -->
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Замовника</h5>
+                    <form id="customer-form-user">
+                        <div class="mb-3">
+                            <label for="cust-name-user" class="form-label">Ім'я / Компанія</label>
+                            <input type="text" class="form-control" id="cust-name-user" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-email-user" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="cust-email-user" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-phone-user" class="form-label">Телефон</label>
+                            <input type="text" class="form-control" id="cust-phone-user" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-company-user" class="form-label">Компанія (якщо інше поле — залишити пустим)</label>
+                            <input type="text" class="form-control" id="cust-company-user" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Додати Замовника</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Форма створення ТЗ -->
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Технічне Завдання (ТЗ)</h5>
+                    <form id="spec-form-user">
+                        <div class="mb-3">
+                            <label for="spec-customer-user" class="form-label">Замовник</label>
+                            <select class="form-select" id="spec-customer-user" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-title-user" class="form-label">Назва ТЗ</label>
+                            <input type="text" class="form-control" id="spec-title-user" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-desc-user" class="form-label">Опис</label>
+                            <textarea class="form-control" id="spec-desc-user" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-req-user" class="form-label">Вимоги (наприклад “SENIOR”, “MIDDLE”)</label>
+                            <input type="text" class="form-control" id="spec-req-user" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Додати ТЗ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr />
+
+    <!-- Секція для Адміна -->
+    <section id="admin-section" class="py-5 admin-section">
+        <h2 class="section-title">Адмінська Частина</h2>
+        <p class="text-center mb-4">
+            Тут адміністратор може керувати всіма сутностями: Замовники, ТЗ, Менеджери, Розробники, Проєкти, WorkLog, Рахунки.
+        </p>
+
+        <!-- Адмін: Замовники -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Замовника</h5>
+                    <form id="customer-form-admin">
+                        <div class="mb-3">
+                            <label for="cust-name-admin" class="form-label">Ім'я / Компанія</label>
+                            <input type="text" class="form-control" id="cust-name-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-email-admin" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="cust-email-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-phone-admin" class="form-label">Телефон</label>
+                            <input type="text" class="form-control" id="cust-phone-admin" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="cust-company-admin" class="form-label">Компанія</label>
+                            <input type="text" class="form-control" id="cust-company-admin" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти Замовника</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список Замовників</h5>
+                    <ul class="list-group" id="customer-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: ТЗ -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити ТЗ</h5>
+                    <form id="spec-form-admin">
+                        <div class="mb-3">
+                            <label for="spec-customer-admin" class="form-label">Замовник</label>
+                            <select class="form-select" id="spec-customer-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-title-admin" class="form-label">Назва ТЗ</label>
+                            <input type="text" class="form-control" id="spec-title-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-desc-admin" class="form-label">Опис</label>
+                            <textarea class="form-control" id="spec-desc-admin" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="spec-req-admin" class="form-label">Вимоги</label>
+                            <input type="text" class="form-control" id="spec-req-admin" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти ТЗ</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список ТЗ</h5>
+                    <ul class="list-group" id="spec-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: Менеджери -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Менеджера</h5>
+                    <form id="manager-form-admin">
+                        <div class="mb-3">
+                            <label for="mgr-name-admin" class="form-label">Ім'я</label>
+                            <input type="text" class="form-control" id="mgr-name-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mgr-email-admin" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="mgr-email-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="mgr-phone-admin" class="form-label">Телефон</label>
+                            <input type="text" class="form-control" id="mgr-phone-admin" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти Менеджера</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список Менеджерів</h5>
+                    <ul class="list-group" id="manager-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: Розробники -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Додати Розробника</h5>
+                    <form id="developer-form-admin">
+                        <div class="mb-3">
+                            <label for="dev-name-admin" class="form-label">Ім'я</label>
+                            <input type="text" class="form-control" id="dev-name-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dev-email-admin" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="dev-email-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dev-phone-admin" class="form-label">Телефон</label>
+                            <input type="text" class="form-control" id="dev-phone-admin" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dev-rate-admin" class="form-label">Ставка (грн/год)</label>
+                            <input type="number" class="form-control" id="dev-rate-admin" step="0.01" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dev-skill-admin" class="form-label">Рівень</label>
+                            <select class="form-select" id="dev-skill-admin" required>
+                                <option value="">Оберіть рівень</option>
+                                <option value="JUNIOR">JUNIOR</option>
+                                <option value="MIDDLE">MIDDLE</option>
+                                <option value="SENIOR">SENIOR</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти Розробника</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список Розробників</h5>
+                    <ul class="list-group" id="developer-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: Проєкти -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Проєкт</h5>
+                    <form id="project-form-admin">
+                        <div class="mb-3">
+                            <label for="proj-spec-admin" class="form-label">ТЗ</label>
+                            <select class="form-select" id="proj-spec-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-manager-admin" class="form-label">Менеджер</label>
+                            <select class="form-select" id="proj-manager-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-name-admin" class="form-label">Назва Проєкту</label>
+                            <input type="text" class="form-control" id="proj-name-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-desc-admin" class="form-label">Опис</label>
+                            <textarea class="form-control" id="proj-desc-admin" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-hours-admin" class="form-label">Оцінка Годин</label>
+                            <input type="number" class="form-control" id="proj-hours-admin" step="0.01" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти Проєкт</button>
+                    </form>
+                    <div class="mt-3">
+                        <button id="btn-prelim-cost-admin" class="btn btn-outline-info">Отримати Попередню Вартість</button>
+                        <span id="prelim-cost-result-admin" class="fw-bold ms-2"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список Проєктів</h5>
+                    <ul class="list-group" id="project-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: WorkLog -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Додати WorkLog</h5>
+                    <form id="worklog-form-admin">
+                        <div class="mb-3">
+                            <label for="wl-project-admin" class="form-label">Проєкт</label>
+                            <select class="form-select" id="wl-project-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="wl-developer-admin" class="form-label">Розробник</label>
+                            <select class="form-select" id="wl-developer-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="wl-date-admin" class="form-label">Дата</label>
+                            <input type="date" class="form-control" id="wl-date-admin" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="wl-hours-admin" class="form-label">Години</label>
+                            <input type="number" class="form-control" id="wl-hours-admin" step="0.01" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="wl-desc-admin" class="form-label">Опис</label>
+                            <textarea class="form-control" id="wl-desc-admin" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Зберегти WorkLog</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">WorkLog Проєкту</h5>
+                    <div class="mb-3">
+                        <label for="wl-project-filter-admin" class="form-label">Оберіть Проєкт</label>
+                        <select class="form-select" id="wl-project-filter-admin">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <ul class="list-group" id="worklog-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Адмін: Рахунки (Invoice) -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <div class="card p-4">
+                    <h5 class="card-title">Створити Рахунок</h5>
+                    <form id="invoice-form-admin">
+                        <div class="mb-3">
+                            <label for="inv-project-admin" class="form-label">Проєкт</label>
+                            <select class="form-select" id="inv-project-admin" required>
+                                <option value="">Завантаження...</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Створити Рахунок</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h5 class="card-title">Список Рахунків</h5>
+                    <div class="mb-3">
+                        <label for="inv-project-filter-admin" class="form-label">Оберіть Проєкт</label>
+                        <select class="form-select" id="inv-project-filter-admin">
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <ul class="list-group" id="invoice-list-admin"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-1">&copy; 2025 DevTeam. Всі права захищено.</p>
+        <div>
+            <a href="#">Політика конфіденційності</a>
+            <span class="mx-2">|</span>
+            <a href="#">Умови використання</a>
+            <span class="mx-2">|</span>
+            <a href="#">Підтримка</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap 5 JS Bundle CDN -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+></script>
+<!-- Front-end JavaScript для взаємодії з REST API та керування доступом -->
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Спочатку перевіряємо токен при завантаженні
+        const token = localStorage.getItem("jwtToken");
+        if (!token) {
+            window.location.href = "login.html";
+            return;
+        }
+        try {
+            const res = await fetch("/auth/user-info", {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!res.ok) {
+                localStorage.removeItem("jwtToken");
+                window.location.href = "login.html";
+                return;
+            }
+            document.getElementById("logout-btn").style.display = "block";
+            // Декодуємо payload, щоб подивитися ROLE_ADMIN
+            const payloadBase64 = token.split(".")[1];
+            const decoded = JSON.parse(atob(payloadBase64));
+            const roles = decoded.authorities || [];
+            const adminLink = document.getElementById("admin-nav-link");
+            if (adminLink) {
+                if (roles.includes("ROLE_ADMIN")) {
+                    adminLink.style.display = "block";
+                } else {
+                    adminLink.style.display = "none";
+                }
+            }
+        } catch (err) {
+            localStorage.removeItem("jwtToken");
+            window.location.href = "login.html";
+            return;
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const apiBase = "/api";
+        const ADMIN_PASSWORD = "admin123";
+
+        // Елементи навігації
+        const adminNavLink = document.getElementById("admin-nav-link");
+        const logoutBtn = document.getElementById("logout-btn");
+
+        // Секції сторінки
+        const userSection = document.getElementById("user-section");
+        const adminSection = document.getElementById("admin-section");
+
+        // Форми & списки (Користувач)
+        const customerFormUser = document.getElementById("customer-form-user");
+        const specFormUser = document.getElementById("spec-form-user");
+        const specCustomerSelectUser = document.getElementById("spec-customer-user");
+
+        // Форми & списки (Адмін)
+        const customerFormAdmin = document.getElementById("customer-form-admin");
+        const customerListAdmin = document.getElementById("customer-list-admin");
+        const specFormAdmin = document.getElementById("spec-form-admin");
+        const specListAdmin = document.getElementById("spec-list-admin");
+        const specCustomerSelectAdmin = document.getElementById("spec-customer-admin");
+        const managerFormAdmin = document.getElementById("manager-form-admin");
+        const managerListAdmin = document.getElementById("manager-list-admin");
+        const developerFormAdmin = document.getElementById("developer-form-admin");
+        const developerListAdmin = document.getElementById("developer-list-admin");
+        const projectFormAdmin = document.getElementById("project-form-admin");
+        const projectListAdmin = document.getElementById("project-list-admin");
+        const projSpecSelectAdmin = document.getElementById("proj-spec-admin");
+        const projManagerSelectAdmin = document.getElementById("proj-manager-admin");
+        const wlProjectSelectAdmin = document.getElementById("wl-project-admin");
+        const wlDeveloperSelectAdmin = document.getElementById("wl-developer-admin");
+        const worklogFormAdmin = document.getElementById("worklog-form-admin");
+        const worklogListAdmin = document.getElementById("worklog-list-admin");
+        const wlProjectFilterAdmin = document.getElementById("wl-project-filter-admin");
+        const invProjectSelectAdmin = document.getElementById("inv-project-admin");
+        const invProjectFilterAdmin = document.getElementById("inv-project-filter-admin");
+        const invoiceFormAdmin = document.getElementById("invoice-form-admin");
+        const invoiceListAdmin = document.getElementById("invoice-list-admin");
+        const prelimCostBtnAdmin = document.getElementById("btn-prelim-cost-admin");
+        const prelimCostResultAdmin = document.getElementById("prelim-cost-result-admin");
+
+        // Допоміжна функція: повертає заголовок з JWT
+        function getAuthHeader() {
+            const token = localStorage.getItem("jwtToken");
+            return token ? { "Authorization": `Bearer ${token}` } : {};
+        }
+
+        // Початково показуємо тільки користувацьку частину
+        showUserSection();
+
+        // Клік на "Адмін" – запит пароля
+        adminNavLink.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const pwd = prompt("Введіть адмінський пароль:");
+            if (pwd === ADMIN_PASSWORD) {
+                showAdminSection();
+                await loadAllAdminData();
+            } else {
+                alert("Невірний пароль.");
+            }
+        });
+
+        // Клік на "Вихід" – повертаємося до користувача
+        logoutBtn.addEventListener("click", () => {
+            showUserSection();
+        });
+
+        // Показати користувацьку секцію
+        function showUserSection() {
+            userSection.style.display = "block";
+            adminSection.style.display = "none";
+            logoutBtn.style.display = "none";
+            adminNavLink.style.display = "block";
+        }
+
+        // Показати адмінську секцію
+        function showAdminSection() {
+            userSection.style.display = "none";
+            adminSection.style.display = "block";
+            logoutBtn.style.display = "block";
+            adminNavLink.style.display = "none";
+        }
+
+        // ======================= Користувацька Логіка =======================
+
+        // Завантажити замовників (для селектів і списку адміна)
+        async function loadCustomers(selectIds = []) {
+            const res = await fetch(`${apiBase}/customers`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadCustomers] Помилка статус:", res.status);
+                if (res.status === 401 || res.status === 403) {
+                    localStorage.removeItem("jwtToken");
+                    window.location.href = "login.html";
+                }
+                return;
+            }
+            let body;
+            try {
+                body = await res.json();
+            } catch (err) {
+                console.error("[loadCustomers] Помилка JSON:", err);
+                return;
+            }
+            let customers;
+            if (Array.isArray(body)) {
+                customers = body;
+            } else if (body && Array.isArray(body.content)) {
+                customers = body.content;
+            } else {
+                customers = [];
+            }
+
+            if (selectIds.includes("user")) {
+                specCustomerSelectUser.innerHTML = "<option value=''>Оберіть Замовника</option>";
+                customers.forEach(c => {
+                    const opt = document.createElement("option");
+                    opt.value = c.customerId;
+                    opt.textContent = c.name;
+                    specCustomerSelectUser.appendChild(opt);
+                });
+            }
+
+            if (selectIds.includes("admin")) {
+                specCustomerSelectAdmin.innerHTML = "<option value=''>Оберіть Замовника</option>";
+                customerListAdmin.innerHTML = "";
+                customers.forEach(c => {
+                    const opt = document.createElement("option");
+                    opt.value = c.customerId;
+                    opt.textContent = c.name;
+                    specCustomerSelectAdmin.appendChild(opt);
+
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+                    li.innerHTML = `
+                        <strong>${c.name}</strong><br/>
+                        ${c.email}<br/>
+                        ${c.phone || ""}<br/>
+                        ${c.company || ""}
+                    `;
+                    customerListAdmin.appendChild(li);
+                });
+            }
+        }
+
+        // Користувач додає Замовника
+        customerFormUser.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("cust-name-user").value.trim();
+            const email = document.getElementById("cust-email-user").value.trim();
+            const phone = document.getElementById("cust-phone-user").value.trim();
+            const company = document.getElementById("cust-company-user").value.trim();
+            const res = await fetch(`${apiBase}/customers`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ name, email, phone, company }),
+            });
+            if (!res.ok) {
+                console.error("[POST /customers] статус:", res.status);
+                return;
+            }
+            customerFormUser.reset();
+            await loadCustomers(["user", "admin"]);
+        });
+
+        // Завантажити ТЗ
+        async function loadSpecifications(selectIds = []) {
+            const res = await fetch(`${apiBase}/specifications`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadSpecifications] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            let specs;
+            if (Array.isArray(body)) {
+                specs = body;
+            } else if (body && Array.isArray(body.content)) {
+                specs = body.content;
+            } else {
+                specs = [];
+            }
+            if (selectIds.includes("admin")) {
+                specListAdmin.innerHTML = "";
+                projSpecSelectAdmin.innerHTML = "<option value=''>Оберіть ТЗ</option>";
+                specs.forEach(s => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+                    li.innerHTML = `
+                        <strong>${s.title}</strong><br/>
+                        Замовник: ${s.customer.name}<br/>
+                        Вимоги: ${s.requirements}
+                    `;
+                    specListAdmin.appendChild(li);
+
+                    const opt = document.createElement("option");
+                    opt.value = s.specId;
+                    opt.textContent = `${s.title} (ID ${s.specId})`;
+                    projSpecSelectAdmin.appendChild(opt);
+                });
+            }
+        }
+
+        specFormUser.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const customerId = specCustomerSelectUser.value;
+            const title = document.getElementById("spec-title-user").value.trim();
+            const description = document.getElementById("spec-desc-user").value.trim();
+            let requirements = document.getElementById("spec-req-user").value.trim();
+            requirements = requirements.replace(/“|”|"/g, "").replace(/’|‘|'/g, "").toUpperCase();
+            if (!customerId) {
+                alert("Оберіть Замовника.");
+                return;
+            }
+            const res = await fetch(`${apiBase}/specifications/customer/${customerId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ title, description, requirements }),
+            });
+            if (!res.ok) {
+                console.error("[POST /specifications] статус:", res.status);
+                return;
+            }
+            specFormUser.reset();
+            await loadSpecifications(["admin"]);
+        });
+
+        // ======================= Адмінська Логіка =======================
+
+        // Завантажити менеджерів
+        async function loadManagers(selectIds = []) {
+            const res = await fetch(`${apiBase}/managers`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadManagers] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            let managers;
+            if (Array.isArray(body)) {
+                managers = body;
+            } else if (body && Array.isArray(body.content)) {
+                managers = body.content;
+            } else {
+                managers = [];
+            }
+            if (selectIds.includes("admin")) {
+                managerListAdmin.innerHTML = "";
+                projManagerSelectAdmin.innerHTML = "<option value=''>Оберіть Менеджера</option>";
+                managers.forEach(m => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+                    li.innerHTML = `
+                        <strong>${m.name}</strong><br/>
+                        ${m.email}<br/>
+                        ${m.phone || ""}
+                    `;
+                    managerListAdmin.appendChild(li);
+
+                    const opt = document.createElement("option");
+                    opt.value = m.managerId;
+                    opt.textContent = `${m.name} (ID ${m.managerId})`;
+                    projManagerSelectAdmin.appendChild(opt);
+                });
+            }
+        }
+
+        managerFormAdmin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("mgr-name-admin").value.trim();
+            const email = document.getElementById("mgr-email-admin").value.trim();
+            const phone = document.getElementById("mgr-phone-admin").value.trim();
+            const res = await fetch(`${apiBase}/managers`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ name, email, phone }),
+            });
+            if (!res.ok) {
+                console.error("[POST /managers] статус:", res.status);
+                return;
+            }
+            managerFormAdmin.reset();
+            await loadManagers(["admin"]);
+        });
+
+        // Завантажити розробників
+        async function loadDevelopers(selectIds = []) {
+            const res = await fetch(`${apiBase}/developers`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadDevelopers] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            let devs;
+            if (Array.isArray(body)) {
+                devs = body;
+            } else if (body && Array.isArray(body.content)) {
+                devs = body.content;
+            } else {
+                devs = [];
+            }
+            if (selectIds.includes("admin")) {
+                developerListAdmin.innerHTML = "";
+                wlDeveloperSelectAdmin.innerHTML = "<option value=''>Оберіть Розробника</option>";
+                devs.forEach(d => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item d-flex justify-content-between align-items-center";
+                    li.innerHTML = `
+                        <div>
+                            <strong>${d.name}</strong> (${d.skillLevel})<br/>
+                            ${d.email}
+                        </div>
+                    `;
+                    if (!d.isAvailable) {
+                        const badge = document.createElement("span");
+                        badge.className = "badge bg-secondary";
+                        badge.textContent = "Зайнятий";
+                        li.appendChild(badge);
+                    }
+                    developerListAdmin.appendChild(li);
+                    if (d.isAvailable) {
+                        const opt = document.createElement("option");
+                        opt.value = d.developerId;
+                        opt.textContent = `${d.name} (${d.skillLevel})`;
+                        wlDeveloperSelectAdmin.appendChild(opt);
+                    }
+                });
+            }
+        }
+
+        developerFormAdmin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("dev-name-admin").value.trim();
+            const email = document.getElementById("dev-email-admin").value.trim();
+            const phone = document.getElementById("dev-phone-admin").value.trim();
+            const hourlyRate = parseFloat(document.getElementById("dev-rate-admin").value);
+            const skillLevel = document.getElementById("dev-skill-admin").value;
+            const res = await fetch(`${apiBase}/developers`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ name, email, phone, hourlyRate, skillLevel }),
+            });
+            if (!res.ok) {
+                console.error("[POST /developers] статус:", res.status);
+                return;
+            }
+            developerFormAdmin.reset();
+            await loadDevelopers(["admin"]);
+        });
+
+        // Завантажити проєкти
+        async function loadProjects(selectIds = []) {
+            const res = await fetch(`${apiBase}/projects`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadProjects] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            let projs;
+            if (Array.isArray(body)) {
+                projs = body;
+            } else if (body && Array.isArray(body.content)) {
+                projs = body.content;
+            } else {
+                projs = [];
+            }
+            if (selectIds.includes("admin")) {
+                projectListAdmin.innerHTML = "";
+                wlProjectSelectAdmin.innerHTML = "<option value=''>Оберіть Проєкт</option>";
+                wlProjectFilterAdmin.innerHTML = "<option value=''>--</option>";
+                invProjectSelectAdmin.innerHTML = "<option value=''>Оберіть Проєкт</option>";
+                invProjectFilterAdmin.innerHTML = "<option value=''>--</option>";
+                projs.forEach(p => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+                    li.innerHTML = `
+                        <strong>${p.name}</strong> (ID: ${p.projectId})<br/>
+                        ТЗ: ${p.specification.title}<br/>
+                        Менеджер: ${p.manager.name}<br/>
+                        Статус: ${p.status}<br/>
+                        Оцінка годин: ${p.estimatedHours}
+                    `;
+                    projectListAdmin.appendChild(li);
+
+                    [wlProjectSelectAdmin, wlProjectFilterAdmin, invProjectSelectAdmin, invProjectFilterAdmin].forEach(sel => {
+                        const opt = document.createElement("option");
+                        opt.value = p.projectId;
+                        opt.textContent = `${p.name} (ID ${p.projectId})`;
+                        sel.appendChild(opt);
+                    });
+                });
+            }
+        }
+
+        projectFormAdmin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const specId = projSpecSelectAdmin.value;
+            const managerId = projManagerSelectAdmin.value;
+            const name = document.getElementById("proj-name-admin").value.trim();
+            const description = document.getElementById("proj-desc-admin").value.trim();
+            const estimatedHours = parseFloat(document.getElementById("proj-hours-admin").value);
+            const res = await fetch(`${apiBase}/projects/spec/${specId}/manager/${managerId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ name, description, estimatedHours }),
+            });
+            if (!res.ok) {
+                console.error("[POST /projects] статус:", res.status);
+                return;
+            }
+            projectFormAdmin.reset();
+            prelimCostResultAdmin.textContent = "";
+            await loadProjects(["admin"]);
+        });
+
+        // Завантажити WorkLog
+        async function loadWorkLogs(projectId) {
+            worklogListAdmin.innerHTML = "";
+            if (!projectId) return;
+            const res = await fetch(`${apiBase}/worklogs/project/${projectId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadWorkLogs] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            body.forEach(w => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.innerHTML = `
+                    <strong>Розробник:</strong> ${w.developer.name} (${w.developer.skillLevel})<br/>
+                    <strong>Дата:</strong> ${w.logDate} &nbsp;
+                    <strong>Годин:</strong> ${w.hours}<br/>
+                    <strong>Опис:</strong> ${w.description}
+                `;
+                worklogListAdmin.appendChild(li);
+            });
+        }
+
+        worklogFormAdmin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const projectId = wlProjectSelectAdmin.value;
+            const developerId = wlDeveloperSelectAdmin.value;
+            const logDate = document.getElementById("wl-date-admin").value;
+            const hours = parseFloat(document.getElementById("wl-hours-admin").value);
+            const description = document.getElementById("wl-desc-admin").value.trim();
+            const res = await fetch(`${apiBase}/worklogs/project/${projectId}/developer/${developerId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                },
+                body: JSON.stringify({ logDate, hours, description }),
+            });
+            if (!res.ok) {
+                console.error("[POST /worklogs] статус:", res.status);
+                return;
+            }
+            worklogFormAdmin.reset();
+            loadWorkLogs(wlProjectFilterAdmin.value);
+        });
+
+        wlProjectFilterAdmin.addEventListener("change", () => {
+            loadWorkLogs(wlProjectFilterAdmin.value);
+        });
+
+        // Завантажити рахунки
+        async function loadInvoices(projectId) {
+            invoiceListAdmin.innerHTML = "";
+            if (!projectId) return;
+            const res = await fetch(`${apiBase}/invoices/project/${projectId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[loadInvoices] статус:", res.status);
+                return;
+            }
+            const body = await res.json();
+            body.forEach(inv => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `
+                    <div>
+                        <strong>ID:</strong> ${inv.invoiceId}&nbsp;|&nbsp;
+                        <strong>Дата:</strong> ${inv.issuedDate}&nbsp;|&nbsp;
+                        <strong>Сума:</strong> ${inv.totalAmount} грн
+                    </div>
+                `;
+                const badge = document.createElement("span");
+                badge.className = inv.isPaid ? "badge bg-success" : "badge bg-warning text-dark";
+                badge.textContent = inv.isPaid ? "Оплачено" : "Не оплачено";
+                li.appendChild(badge);
+                invoiceListAdmin.appendChild(li);
+            });
+        }
+
+        invoiceFormAdmin.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const projectId = invProjectSelectAdmin.value;
+            const res = await fetch(`${apiBase}/invoices/project/${projectId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[POST /invoices] статус:", res.status);
+                return;
+            }
+            invoiceFormAdmin.reset();
+            loadInvoices(invProjectFilterAdmin.value);
+        });
+
+        invProjectFilterAdmin.addEventListener("change", () => {
+            loadInvoices(invProjectFilterAdmin.value);
+        });
+
+        // Отримати попередню вартість
+        async function getPrelimCostAdmin() {
+            const projId = document.getElementById("proj-spec-admin").value;
+            if (!projId) {
+                prelimCostResultAdmin.textContent = "Оберіть проєкт.";
+                return;
+            }
+            const res = await fetch(`${apiBase}/projects/${projId}/preliminaryCost`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getAuthHeader()
+                }
+            });
+            if (!res.ok) {
+                console.error("[GET preliminaryCost] статус:", res.status);
+                return;
+            }
+            const cost = await res.json();
+            prelimCostResultAdmin.textContent = `${cost} грн`;
+        }
+        prelimCostBtnAdmin.addEventListener("click", getPrelimCostAdmin);
+
+        // Після входу в адмінську частину – завантажуємо всі потрібні дані
+        async function loadAllAdminData() {
+            await loadCustomers(["admin", "user"]);
+            await loadSpecifications(["admin"]);
+            await loadManagers(["admin"]);
+            await loadDevelopers(["admin"]);
+            await loadProjects(["admin"]);
+        }
+    });
+</script>
+</body>
+</html>
